@@ -11,9 +11,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.google.android.gms.location.*
+import com.google.android.gms.maps.CameraUpdate
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
@@ -24,47 +26,34 @@ class MapsFragment : Fragment() {
     private lateinit var locationCallback: LocationCallback
     private lateinit var fusedClient: FusedLocationProviderClient
     private var meMarker: Marker? = null
+    private var focusedOnMe = false
 
     @SuppressLint("MissingPermission")
     private val callback = OnMapReadyCallback { googleMap ->
 
-      /*  val sydney = LatLng(-34.0, 151.0)
-        googleMap.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
-        googleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))*/
-
+        googleMap.isMyLocationEnabled = true
         fusedClient = LocationServices.getFusedLocationProviderClient(requireActivity())
 
-        val locationRequest = LocationRequest.create()?.apply {
-            interval = 2000
-            fastestInterval = 2000
-            priority = LocationRequest.PRIORITY_HIGH_ACCURACY
-        }
-        locationCallback = object : LocationCallback() {
-            override fun onLocationResult(result: LocationResult?) {
-                result ?: return
-                if(result.locations.isNotEmpty())
-                {
-                    val location =result.lastLocation
-                    val latLng: LatLng = LatLng(location.latitude, location.longitude)
-                    googleMap.moveCamera(CameraUpdateFactory.newLatLng(latLng))
-                    if(meMarker != null) {
-                        meMarker!!.position = latLng
+        fusedClient!!.lastLocation.addOnSuccessListener {
+            if(!focusedOnMe) {
+                val latLng: LatLng = LatLng(it.latitude, it.longitude)
 
-                    }
-                    else
-                    {
-                        meMarker = googleMap.addMarker(MarkerOptions().position(latLng).title("I'm here"))
-                    }
-                    googleMap.setMinZoomPreference(13.0f)
-                    googleMap.setMaxZoomPreference(22.0f)
-                }
+                var targetPos:CameraPosition = CameraPosition.builder()
+                    .target(latLng)
+                    .zoom(18.0f)
+                    .build()
+                var camUpdate:CameraUpdate = CameraUpdateFactory.newCameraPosition(targetPos)
+                googleMap.animateCamera(camUpdate, 4000, null)
+                focusedOnMe = true
             }
         }
 
-        fusedClient!!.requestLocationUpdates(locationRequest, locationCallback, null)
-
         googleMap.setOnMapClickListener {
             it -> LogDebug("Clicked on " + it.latitude + " " + it.longitude)
+        }
+
+        googleMap.setOnMapLongClickListener {
+                it -> LogDebug("Long clicked on " + it.latitude + " " + it.longitude)
         }
     }
 

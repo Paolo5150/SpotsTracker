@@ -5,6 +5,7 @@ import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
+import android.widget.LinearLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.navigation.NavController
@@ -13,6 +14,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.navigation.NavigationView
 import com.pf.spotstracker.databinding.ActivityMainBinding
 import com.pf.spotstracker.utils.alertDialogOk
@@ -40,6 +42,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         val navigationView: NavigationView = binding.navView
         val drawer = binding.drawerLayout
+
+        val bottomSheet = binding.bottomSheet.bottomSheet
+        var bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet)
+
+        bottomSheetBehavior.state = BottomSheetBehavior.STATE_DRAGGING
 
         navController = navHostFragment.navController
         appBarConfiguration = AppBarConfiguration(navController.graph, drawer)
