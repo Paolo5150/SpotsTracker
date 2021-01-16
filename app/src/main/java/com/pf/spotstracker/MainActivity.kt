@@ -33,7 +33,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-
         checkPermissions()
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)

@@ -5,8 +5,8 @@ import android.R
 import android.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
+import android.util.Log
 import android.widget.Toast
-import androidx.core.app.ActivityCompat
 
 
 fun Context.toastShort(text: String) {
@@ -30,6 +30,7 @@ fun Context.alertDialogOkCancel(title: String, msg: String,
             .show()
 }
 
+
 fun Context.alertDialogOk(title: String, msg: String,
                           okListener: DialogInterface.OnClickListener,
                           isCancelable:Boolean = true) {
@@ -40,4 +41,9 @@ fun Context.alertDialogOk(title: String, msg: String,
             .setPositiveButton("Ok", okListener)
             .create()
             .show()
+}
+
+fun LogDebug(msg: String)
+{
+    Log.d("SpotsTracker", msg);
 }

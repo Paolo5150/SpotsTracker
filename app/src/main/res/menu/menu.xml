@@ -7,5 +7,5 @@
         android:title="Map" />
     <item
         android:id="@+id/menu_test"
-        android:title="Other fragment" />
+        android:title="Saved spots" />
 </menu>
