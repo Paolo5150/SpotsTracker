@@ -46,6 +46,7 @@ ClusterManager.OnClusterItemInfoWindowClickListener<POIClusterItem>{
     private lateinit var markersList: MutableList<Marker>
     private lateinit var clusterManager: ClusterManager<POIClusterItem>
 
+
     @SuppressLint("MissingPermission")
     private val callback = OnMapReadyCallback { googleMap ->
 
@@ -82,7 +83,7 @@ ClusterManager.OnClusterItemInfoWindowClickListener<POIClusterItem>{
             it -> LogDebug("Clicked on " + it.latitude + " " + it.longitude)
 
            /* val q = Volley.newRequestQueue(MainActivity.getMainActivity())
-            val url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=" +it.latitude + ","+ it.longitude + "&type=restaurant&radius=2&sensor=false&key=AIzaSyAZZ8LCqdNIrmLF0DyjYpOCQmoof2oujAc"
+            val url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=" +it.latitude + ","+ it.longitude + "&type=restaurant&radius=2&sensor=false&key=" + BuildConfig.ApiKey
 
             val stringRequest = StringRequest(
                     Request.Method.GET, url,
